@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title id="page-title">Wedding Invitation</title>
 
 <!-- ============================================================
@@ -103,13 +103,14 @@ body {
 ═══════════════════════════════════════════════════════════════ */
 #hero {
   position: relative;
+  min-height: 100dvh;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 60px 20px 80px;
+  padding: 60px 20px 180px;
   overflow: hidden;
   background: var(--green-deep);
 }
@@ -201,7 +202,7 @@ body {
 
 .scroll-hint {
   position: absolute;
-  bottom: 70px;
+  bottom: calc(130px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
@@ -243,7 +244,7 @@ body {
    SECTIONS SHARED
 ═══════════════════════════════════════════════════════════════ */
 .section {
-  padding: 80px 20px;
+  padding: 60px 20px;
   max-width: 800px;
   margin: 0 auto;
   text-align: center;
@@ -827,14 +828,125 @@ footer .footer-gold { color: var(--gold); }
 @keyframes coverFadeOut  { to { opacity:0; pointer-events:none } }
 
 /* ─── Responsive ──────────────────────────────────────────── */
-@media (max-width: 600px) {
-  .slide img { height: 280px; }
-  .message-box { padding: 36px 22px; }
-  .rsvp-card { padding: 36px 22px; }
-  .time-cards { gap: 12px; }
-  .time-card { padding: 18px 20px; min-width: 130px; }
-  .cd-box { min-width: 72px; padding: 18px 12px 14px; }
-  .cd-num { font-size: 2.2rem; }
+/* ─── Responsive — iOS & Android ──────────────────────────── */
+
+/* Prevent iOS font inflation & tap flash */
+* { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { -webkit-overflow-scrolling: touch; }
+
+/* Safe area padding for iPhone notch / home bar */
+body {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (max-width: 768px) {
+
+  /* ── Hero ── */
+  #hero {
+    min-height: 100svh; /* Small viewport height — accounts for browser chrome */
+    padding: 50px 16px 200px;
+  }
+  .hero-bismillah  { font-size: 1.5rem; margin-bottom: 12px; }
+  .hero-subtitle   { font-size: 0.68rem; letter-spacing: 0.15em; }
+  #hero-groom,
+  #hero-bride      { font-size: clamp(2.2rem, 10vw, 3.6rem); line-height: 1.1; }
+  .hero-ampersand  { font-size: clamp(1.1rem, 4.5vw, 1.6rem); margin: 4px 0; }
+  .hero-names-ar   { font-size: clamp(0.95rem, 3.5vw, 1.3rem); margin: 10px 0; }
+  .hero-date-chip  { font-size: 0.8rem; padding: 8px 18px; margin-top: 16px; }
+  .corner-dec      { width: 75px; height: 75px; }
+
+  /* ── Scroll hint ── */
+  .scroll-hint {
+    bottom: max(110px, calc(90px + env(safe-area-inset-bottom, 20px)));
+    font-size: 0.72rem;
+  }
+
+  /* ── Sections ── */
+  .section         { padding: 48px 16px; }
+  .section-title   { font-size: clamp(1.5rem, 6vw, 2rem); }
+  .section-subtitle{ font-size: 0.68rem; letter-spacing: 0.18em; }
+
+  /* ── Date & Time ── */
+  #date-big        { font-size: clamp(1.3rem, 4.5vw, 1.8rem); }
+  .time-cards      { flex-direction: column; align-items: center; gap: 12px; }
+  .time-card       { width: 100%; max-width: 300px; padding: 20px 16px; min-width: unset; }
+  .time-card-time  { font-size: 1.5rem; }
+
+  /* ── Message box ── */
+  .message-box     { padding: 28px 18px; margin: 0; }
+  .message-box p   { font-size: 1rem; line-height: 1.85; }
+  .quran-verse     { font-size: clamp(0.95rem, 3.5vw, 1.3rem); line-height: 1.9; }
+  .quran-ref       { font-size: 0.72rem; }
+
+  /* ── Countdown ── */
+  .cd-grid         { gap: 8px; }
+  .cd-box          { min-width: 66px; padding: 14px 8px 12px; }
+  .cd-num          { font-size: 1.9rem; }
+  .cd-label        { font-size: 0.58rem; letter-spacing: 0.12em; }
+  #cd-msg          { font-size: 0.76rem; padding: 0 12px; }
+
+  /* ── Venue ── */
+  .venue-card      { padding: 28px 18px; }
+  .venue-name-big  { font-size: clamp(1.3rem, 5vw, 1.9rem); }
+  .venue-map-btn   { padding: 12px 20px; font-size: 0.74rem; width: 100%; text-align: center; }
+
+  /* ── RSVP ── */
+  .rsvp-card       { padding: 28px 18px; }
+  .rsvp-wa-btn     { width: 100%; padding: 15px 20px; font-size: 0.8rem; text-align: center; }
+
+  /* ── Footer ── */
+  footer           { padding: 40px 16px calc(50px + env(safe-area-inset-bottom, 0px)); }
+  .footer-dua      { font-size: clamp(1.1rem, 4vw, 1.5rem); }
+
+  /* ── Floating buttons — above nav bar on both platforms ── */
+  .float-wa,
+  #float-wa {
+    bottom: max(80px, calc(68px + env(safe-area-inset-bottom, 16px))) !important;
+    right: 16px;
+    width: 52px;
+    height: 52px;
+  }
+  .music-btn,
+  #music-btn {
+    bottom: max(80px, calc(68px + env(safe-area-inset-bottom, 16px))) !important;
+    left: 16px;
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  /* ── Gate tap prompt ── */
+  .tap-prompt,
+  #tap-prompt {
+    bottom: max(130px, calc(110px + env(safe-area-inset-bottom, 24px))) !important;
+    font-size: 0.82rem;
+    padding: 12px 22px;
+  }
+  .tap-text { font-size: 0.82rem; letter-spacing: 0.2em; }
+}
+
+/* Very small phones (SE, Galaxy A series) */
+@media (max-width: 380px) {
+  #hero-groom,
+  #hero-bride     { font-size: 2rem; }
+  .hero-bismillah { font-size: 1.3rem; }
+  .cd-box         { min-width: 58px; padding: 12px 6px; }
+  .cd-num         { font-size: 1.6rem; }
+  .section        { padding: 40px 14px; }
+  .hero-date-chip { font-size: 0.72rem; padding: 7px 14px; }
+}
+
+/* Landscape mode on phones */
+@media (max-height: 500px) and (orientation: landscape) {
+  #hero {
+    min-height: auto;
+    padding: 30px 16px 100px;
+  }
+  .scroll-hint { bottom: 20px; }
+  #hero-groom,
+  #hero-bride  { font-size: 2rem; }
+  .hero-bismillah { font-size: 1.2rem; }
 }
 </style>
 </head>
@@ -1064,62 +1176,71 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-/* ── Background Music (embedded, built from stored base64) ── */
-function b64ToBlob(b64, mime) {
-  const byteChars = atob(b64);
-  const byteArr = new Uint8Array(byteChars.length);
-  for (let i = 0; i < byteChars.length; i++) byteArr[i] = byteChars.charCodeAt(i);
-  return new Blob([byteArr], { type: mime });
-}
-const audio = document.getElementById('bg-audio');
-const rawB64 = document.getElementById('audioData').textContent.trim();
-audio.src    = URL.createObjectURL(b64ToBlob(rawB64, 'audio/mpeg'));
-audio.volume = 0.35;
-let playing  = false;
-
-const musicBtn  = document.getElementById('music-btn');
-const iconPlay  = document.getElementById('music-icon-play');
-const iconMute  = document.getElementById('music-icon-mute');
+/* ── Background Music — decoded lazily on gate tap ── */
+let audio   = document.getElementById('bg-audio');
+let playing = false;
+const musicBtn = document.getElementById('music-btn');
+const iconPlay = document.getElementById('music-icon-play');
+const iconMute = document.getElementById('music-icon-mute');
 
 function setMusicUI(on) {
-  iconPlay.style.display = on ? 'none'  : '';
-  iconMute.style.display = on ? ''      : 'none';
+  if (iconPlay) iconPlay.style.display = on ? 'none' : '';
+  if (iconMute) iconMute.style.display = on ? ''     : 'none';
 }
-
-musicBtn.addEventListener('click', () => {
+if (musicBtn) musicBtn.addEventListener('click', function(e) {
+  e.stopPropagation();
   if (playing) { audio.pause(); playing = false; }
-  else         { audio.play().catch(()=>{}); playing = true; }
+  else { audio.play().catch(function(){}); playing = true; }
   setMusicUI(playing);
 });
 
-/* ── Gate Opening Intro ────────────────────────────────── */
-const pageCover = document.getElementById('page-cover');
-const gateLeft   = document.getElementById('gate-door-left');
-const gateRight  = document.getElementById('gate-door-right');
-let gateOpened = false;
+function startAudio() {
+  if (audio.src && audio.src !== window.location.href) {
+    audio.play().then(function(){ playing = true; setMusicUI(true); }).catch(function(){});
+    return;
+  }
+  /* Decode base64 lazily — AFTER user gesture so it doesn't block page load */
+  try {
+    var b64 = document.getElementById('audioData').textContent.trim();
+    var bc  = atob(b64);
+    var arr = new Uint8Array(bc.length);
+    for (var i = 0; i < bc.length; i++) arr[i] = bc.charCodeAt(i);
+    audio.src = URL.createObjectURL(new Blob([arr], { type: 'audio/mpeg' }));
+    audio.volume = 0.45;
+    audio.play().then(function(){ playing = true; setMusicUI(true); }).catch(function(){});
+  } catch(e) { console.warn('Audio error:', e); }
+}
+
+/* ── Gate Opening ── */
+var pageCover  = document.getElementById('page-cover');
+var gateLeft   = document.getElementById('gate-door-left');
+var gateRight  = document.getElementById('gate-door-right');
+var gateOpened = false;
 
 function openGate() {
   if (gateOpened) return;
   gateOpened = true;
 
-  /* Start music inside the tap gesture so autoplay is allowed */
-  audio.play().then(() => { playing = true; setMusicUI(true); }).catch(()=>{});
+  /* Audio MUST be called synchronously inside the gesture handler */
+  startAudio();
 
   gateLeft.classList.add('open');
   gateRight.classList.add('open');
   pageCover.classList.add('opening');
 
-  setTimeout(() => { pageCover.classList.add('cover-hide'); }, 1400);
-  setTimeout(() => { pageCover.style.display = 'none'; }, 2200);
+  setTimeout(function(){ pageCover.classList.add('cover-hide'); }, 1400);
+  setTimeout(function(){ pageCover.style.display = 'none'; }, 2300);
 }
-pageCover.addEventListener('click', openGate);
-pageCover.addEventListener('touchend', function(e){ e.preventDefault(); openGate(); }, { passive:false });
 
-/* ── Scroll-Reveal ─────────────────────────────────────── */
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+/* Both touchstart (fires first, no delay) and click (desktop fallback) */
+pageCover.addEventListener('touchstart', function(e){ e.preventDefault(); openGate(); }, { passive: false });
+pageCover.addEventListener('click', openGate);
+
+/* ── Scroll-Reveal ── */
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e){ if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+document.querySelectorAll('.reveal').forEach(function(el){ observer.observe(el); });
 </script>
 </body>
 </html>
